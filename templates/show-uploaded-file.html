@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <title>Uploaded image from s3</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <style>
+        img.s3-image {
+          max-width: 1024px;
+          height: auto;
+          display: flex;
+        }
+        .btn {
+          display: inline-block;
+          padding: 6px 12px;
+          margin-bottom: 10px;
+          font-size: 14px;
+          font-weight: 700;
+          text-align: center;
+          white-space: nowrap;
+          vertical-align: middle;
+          text-decoration: none;
+          border: 1px solid transparent;
+          border-radius: 4px;
+        }
+        .btn-primary {
+          color: #fff;
+          background-color: #02be7d;
+          border-color: #01672a;
+        }
+        .btn-primary:hover {
+          color: #fff;
+          background-color: #1ca97b;
+          border-color: #01672a;
+        }
+      </style>
+    </head>
+    <body>
+      <a class="btn btn-primary" href="/">To Upload page</a>
+      <img class="s3-image" src="https://storage.yandexcloud.net/{{ bucket }}/{{ file_name }}" alt="uploaded file">
+    </body>
+</html>
