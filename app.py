@@ -4,6 +4,7 @@ from flask import (
     Flask,
     render_template,
     request,
+    redirect
 )
 import boto3
 import uuid
@@ -52,6 +53,42 @@ def get_form(form_fields):
 
 def get_filename():
     return f'users/uploads/{uuid.uuid4()}.jpg'
+
+
+"""
+get form file fields data then uploads file-like object from memory to S3
+"""
+def upload_file_from_memory(s3_client, file_name, bucket_name, file_like_object):
+    object_name = file_name
+    response = s3_client.upload_fileobj(file_like_object, bucket_name, object_name)
+    return response
+
+
+def upload_file_from_memory_with_conditions(s3_client, file_name, bucket_name, file_like_object, aws_conditions):
+    """
+    get form file fields data then uploads file-like object from memory to S3
+    """
+    object_name = file_name
+    response = s3_client.upload_fileobj(file_like_object, bucket_name, object_name)
+    return response
+
+
+@app.route('/post-form', methods=['POST'])
+def post_form():
+    """
+    get file-like object from flask form and pass file-like object to upload_file_from_memory_with_conditions
+    :return: redirect to success_action_redirect_url
+    """
+    file = request.files['file']
+    file_name = get_filename()
+    upload_file_from_memory_with_conditions(s3, file_name, bucket, file, conditions)
+    success_url = os.environ['SUCCESS_ACTION_REDIRECT_URL']
+    return redirect(f'{success_url}?key={file_name}&bucket={bucket}')
+
+
+@app.route('/file-like')
+def file_like():
+    return render_template('file-like-form.html')
 
 
 @app.route('/')
